@@ -25,6 +25,13 @@ export interface Protocol {
     protocol_name: string;
 }
 
+export interface TopTalker {
+    source_ip: string;
+    total_bytes: number;
+    total_packets: number;
+    flow_count: number;
+}
+
 export interface NavGroup {
     title: string;
     items: NavItem[];

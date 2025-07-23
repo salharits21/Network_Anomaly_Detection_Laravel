@@ -71,4 +71,22 @@ class NetflowController extends Controller
 
         return response()->json($protocols);
     }
+    public function topTalkers(Request $request)
+    {
+        $limit = $request->get('limit', 10);
+
+        $topTalkers = DB::table('netflow_records')
+                        ->select([
+                            'source_ip',
+                            DB::raw('SUM(bytes_in) as total_bytes'),
+                            DB::raw('SUM(packets_in) as total_packets'),
+                            DB::raw('COUNT(*) as flow_count')
+                        ])
+                        ->groupBy('source_ip')
+                        ->orderBy('total_bytes', 'desc')
+                        ->limit($limit)
+                        ->get();
+
+        return response()->json($topTalkers);
+    }
 }
