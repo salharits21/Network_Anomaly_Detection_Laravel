@@ -18,6 +18,13 @@ export interface Stats {
     uniqueDestinations: number;
 }
 
+export interface Protocol {
+    protocol: number;
+    flow_count: number;
+    total_bytes: number;
+    protocol_name: string;
+}
+
 export interface NavGroup {
     title: string;
     items: NavItem[];

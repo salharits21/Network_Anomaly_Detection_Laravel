@@ -51,4 +51,24 @@ class NetflowController extends Controller
             'uniqueDestinations' => $stats->unique_destinations
         ]);
     }
+    public function protocols()
+    {
+        $protocols = DB::table('netflow_records')
+                       ->select([
+                           'protocol',
+                           DB::raw('COUNT(*) as flow_count'),
+                           DB::raw('SUM(bytes_in) as total_bytes'),
+                           DB::raw("CASE 
+                                    WHEN protocol = 1 THEN 'ICMP'
+                                    WHEN protocol = 6 THEN 'TCP'
+                                    WHEN protocol = 17 THEN 'UDP'
+                                    ELSE 'Other'
+                                    END as protocol_name")
+                       ])
+                       ->groupBy('protocol')
+                       ->orderBy('flow_count', 'desc')
+                       ->get();
+
+        return response()->json($protocols);
+    }
 }
