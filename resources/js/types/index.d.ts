@@ -10,6 +10,14 @@ export interface BreadcrumbItem {
     href: string;
 }
 
+export interface Stats {
+    totalFlows: number;
+    totalBytes: number;
+    totalPackets: number;
+    uniqueSources: number;
+    uniqueDestinations: number;
+}
+
 export interface NavGroup {
     title: string;
     items: NavItem[];

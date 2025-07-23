@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use App\Models\NetflowRecords;
+use DB;
 
 class NetflowController extends Controller
 {
@@ -28,6 +29,26 @@ class NetflowController extends Controller
             'netflow' => $netflow,
             // 4. Kirim filter yang sedang aktif kembali ke view
             'filters' => $request->only(['per_page'])
+        ]);
+    }
+    public function stats()
+    {
+        $stats = DB::table('netflow_records')
+                   ->select([
+                       DB::raw('COUNT(*) as total_flows'),
+                       DB::raw('SUM(bytes_in) as total_bytes'),
+                       DB::raw('SUM(packets_in) as total_packets'),
+                       DB::raw('COUNT(DISTINCT source_ip) as unique_sources'),
+                       DB::raw('COUNT(DISTINCT destination_ip) as unique_destinations')
+                   ])
+                   ->first();
+
+        return response()->json([
+            'totalFlows' => $stats->total_flows,
+            'totalBytes' => $stats->total_bytes ?? 0,
+            'totalPackets' => $stats->total_packets ?? 0,
+            'uniqueSources' => $stats->unique_sources,
+            'uniqueDestinations' => $stats->unique_destinations
         ]);
     }
 }
