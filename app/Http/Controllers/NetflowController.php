@@ -89,4 +89,15 @@ class NetflowController extends Controller
 
         return response()->json($topTalkers);
     }
+    
+    public function attackCategoryDistribution()
+    {
+        $distribution = DB::table('netflow_records')
+                            ->select('attack_category', DB::raw('COUNT(*) as count'))
+                            ->groupBy('attack_category')
+                            ->orderBy('attack_category', 'asc')
+                            ->get();
+
+        return response()->json($distribution);
+    }
 }

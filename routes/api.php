@@ -10,6 +10,7 @@ Route::prefix('netflow')->group(function () {
     Route::get('/protocols', [NetflowController::class, 'protocols']);
     Route::get('/search', [NetflowController::class, 'search']);
     Route::delete('/cleanup', [NetflowController::class, 'cleanup']);
+    Route::get('/attack-category-distribution', [NetflowController::class, 'attackCategoryDistribution']);
 });
 
 Route::get('/health', [NetflowController::class, 'health']);

@@ -32,6 +32,11 @@ export interface TopTalker {
     flow_count: number;
 }
 
+export interface AttackCategory {
+    attack_category: string;
+    count: number;
+}
+
 export interface NavGroup {
     title: string;
     items: NavItem[];
